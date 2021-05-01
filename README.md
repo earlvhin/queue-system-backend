@@ -5,7 +5,7 @@
 2. MariaDB or MySQL
 
 ### Setup
-1. Install Necessary Tools for Development
+1. Install Tools for Development
 
 ```
 sudo npm install -g nodemon n
@@ -23,7 +23,7 @@ npm install
 npm run dev
 ```
 
-4. Server should listen in port 5000. To check if API is working, visit:
+4. Server should listen to port 5000. To check if API is working, visit:
 
 ```
 http://localhost:5000/api/ping
