@@ -5,20 +5,20 @@
 */
 
 import { Router, Request, Response, NextFunction } from 'express';
-import { UserService } from '../services/User.service';
+import { getUserById, getAllUsers, getAllUsers_raw } from '../services/User.service';
 
 const userRoutes: Router = Router(); 
 
 userRoutes.get('/users', async (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).send(await new UserService().getAll())
+    res.status(200).send(await getAllUsers())
 });
 
 userRoutes.get('/users_raw', async (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).send(await new UserService().getAll_raw())
+    res.status(200).send(await getAllUsers_raw())
 });
 
 userRoutes.get('/users/:id', async (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).send(await new UserService().getUserById(req.params.id))
+    res.status(200).send(await getUserById(req.params.id))
 })
 
 export default userRoutes;
