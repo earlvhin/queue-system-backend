@@ -1,11 +1,15 @@
 import * as dotenv from 'dotenv';
 import * as logsym from 'log-symbols';
+import carRoutes from './routes/Car.routes';
 import cors from 'cors';
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Application } from 'express';
 import logger from 'morgan';
+import testRoute from './routes/Test.routes';
+import userRoutes from './routes/User.routes';
 import { Server as SocketIOServer } from 'socket.io';
 import { Server } from 'http';
-import { SocketService } from './services/SocketService';
+import { SocketService } from './services/Socket.service';
+import { dbConnection as sequelize } from './config/DbSetup.config';
 
 export class App {
     app: Application = express();
@@ -13,61 +17,49 @@ export class App {
     socket: SocketIOServer;
 
     constructor() {
-        /**
-         * .env - Environment Variable Initialization
-        */
+        /**.env - Environment Variable Initialization */
         dotenv.config();
 
-        /**
-         * Middleware Initialization
-        */
+        /** Database Connection */
+        this.dbTestConnection();
+
+        /** Middleware Initialization */
         this.middleWares();
 
-        /**
-         * Set Port Availability
-        */
+        /** Set Port Availability */
         const PORT = process.env.PORT || 5000;
 
-        /**
-         * Initialize Express Server
-        */
+        /** Initialize Express Server */
         this.server = this.app.listen(PORT, () => {
             console.log(logsym.success, `Server is running on port ${PORT}`)
         })
 
-        /**
-         * Initialize Socket Server 
-        */
+        /** Initialize Socket Server */
         this.socket = new SocketIOServer(this.server,{
             cors: {
                 origin: "*"
             }
         });
 
-        /**
-         * Initialize Socket Service 
-        */
+        /** Initialize Socket Service */
         new SocketService(this.socket);
-    
-        /**
-         * Test Route 
-        */
-        this.app.get('/ping', (req: Request, res: Response, next: NextFunction) => {
-            res.status(200).send({
-                message: 'pong'
-            })
-        })
+
+        /** Initialize API Routes */
+        this.initializeRoutes();
+    }
+
+    initializeRoutes() {
+        /** Add Routes Here */
+        this.app.use('/api', carRoutes);
+        this.app.use('/api', userRoutes);
+        this.app.use('/api', testRoute)
     }
 
     middleWares(): void {
-        /**
-         * Http Request Logger 
-        */
+        /** Http Request Logger */
         this.app.use(logger('dev'));
 
-        /**
-         * Body Parser 
-        */
+        /** Body Parser */
         this.app.use(express.json({ limit: '256mb' }));
         this.app.use(
             express.urlencoded({
@@ -77,9 +69,16 @@ export class App {
             }),
         );
 
-        /**
-         * Allow CORS 
-        */
+        /** Allow CORS */
         this.app.use(cors());
+    }
+
+    async dbTestConnection() {
+        try {
+            await sequelize.authenticate();
+            console.log(logsym.success, 'Connection to the Database is Successful');
+        } catch (error) {
+            console.error(logsym.error, 'Unable to connect to the database:', error);
+        }
     }
 }
