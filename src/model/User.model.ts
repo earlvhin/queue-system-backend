@@ -4,7 +4,7 @@
 */
 
 import { DataTypes } from 'sequelize';
-import { dbConnection as sequelize } from '../config/DbSetup.config';
+import { dbConnection as sequelize } from '../db/config/DbSetup.config';
 
 export const User = sequelize.define('users', {
     id: {

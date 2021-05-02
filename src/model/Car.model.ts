@@ -4,7 +4,7 @@
 */
 
 import { DataTypes } from 'sequelize';
-import { dbConnection as sequelize } from '../config/DbSetup.config';
+import { dbConnection as sequelize } from '../db/config/DbSetup.config';
 
 export const Car = sequelize.define('cars', {
     id: {

@@ -1,6 +1,6 @@
 import * as logsym from 'log-symbols';
 import { QueryTypes } from 'sequelize';
-import { dbConnection as sequelize } from '../config/DbSetup.config';
+import { dbConnection as sequelize } from '../db/config/DbSetup.config';
 import { Car } from '../model/Car.model';
 
 // Built in Sequelize Get All Query Sample

@@ -41,6 +41,7 @@
     "mariadb": "^2.5.3",
     "morgan": "^1.10.0",
     "sequelize": "^6.6.2",
+    "sequelize-cli-typescript": "^3.2.0-c",
     "socket.io": "^4.0.1"
   },
   "optionalDependencies": {
@@ -49,7 +50,7 @@
   },
   "config": {
     "commitizen": {
-        "path": "./node_modules/cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   }
 }

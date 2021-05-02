@@ -9,7 +9,7 @@ import userRoutes from './routes/User.routes';
 import { Server as SocketIOServer } from 'socket.io';
 import { Server } from 'http';
 import { SocketService } from './services/Socket.service';
-import { dbConnection as sequelize } from './config/DbSetup.config';
+import { dbConnection as sequelize } from './db/config/DbSetup.config';
 
 export class App {
     app: Application = express();
