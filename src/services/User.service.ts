@@ -27,11 +27,13 @@ export async function getAllUsers_raw() {
 // Built in Sequelize Where Clause Query Sample
 export async function getUserById(id: string) {
     try {
-        return await User.findAll({
+        const user = await User.findAll({
             where: {
                 id: id
             }
         })
+
+        return JSON.parse(JSON.stringify(user[0], null, 2))
     } catch(err) {
         console.log(logsym.error, err);
     }

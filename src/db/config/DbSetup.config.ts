@@ -6,7 +6,7 @@ import { Sequelize } from 'sequelize';
  * .env - Environment Variable Initialization
 */
 dotenv.config({
-    path: path.join(__dirname, '../../', '.env')
+    path: path.join(__dirname, '../../../', '.env')
 });
 
 /**

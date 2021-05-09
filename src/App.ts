@@ -11,8 +11,14 @@ import { Server } from 'http';
 import { SocketService } from './services/Socket.service';
 import { dbConnection as sequelize } from './db/config/DbSetup.config';
 
+import { ApolloServer } from 'apollo-server-express';
+import compression from 'compression';
+
+const schema = require('./graphql/schema');
+
 export class App {
     app: Application = express();
+    apollo_server: ApolloServer;
     server: Server;
     socket: SocketIOServer;
 
@@ -28,6 +34,13 @@ export class App {
 
         /** Set Port Availability */
         const PORT = process.env.PORT || 5000;
+
+        /** Apollo Express Server */
+        this.apollo_server = new ApolloServer({
+            schema
+		})
+
+		this.apollo_server.applyMiddleware({ app: this.app });
 
         /** Initialize Express Server */
         this.server = this.app.listen(PORT, () => {
@@ -68,6 +81,9 @@ export class App {
                 parameterLimit: 50000,
             }),
         );
+
+        /** Compression */
+        this.app.use(compression());
 
         /** Allow CORS */
         this.app.use(cors());
